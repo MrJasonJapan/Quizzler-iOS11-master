@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         
         checkAnswer(questionNumber: questionNumber)
         questionNumber += 1
-        nextQuestion()
+        nextQuestion() 
     }
     
     
