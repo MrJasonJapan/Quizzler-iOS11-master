@@ -40,7 +40,7 @@ class ViewController: UIViewController {
         
         checkAnswer(questionNumber: questionNumber)
         questionNumber += 1
-        nextQuestion() 
+        nextQuestion()
     }
     
     
@@ -55,8 +55,16 @@ class ViewController: UIViewController {
             questionLabel.text = allQuestions.list[questionNumber].questionText
         }
         else {
-            print("End of Quiz")
-            questionNumber = 0 // reset questionNumber
+            
+            // add an alert and alertAction programmatically.
+            let alert = UIAlertController(title: "You've answered all the questions.", message: "Start over?", preferredStyle: .alert)
+    
+            let restartAction = UIAlertAction(title: "Restart", style: .default, handler: { (UIAlertAction) in
+                self.startOver()
+            })
+            
+            alert.addAction(restartAction)
+            present(alert, animated: true, completion: nil)
         }
     }
     
@@ -75,7 +83,8 @@ class ViewController: UIViewController {
     
     
     func startOver() {
-       
+        questionNumber = 0 // reset questionNumber
+        nextQuestion()
     }
     
 
