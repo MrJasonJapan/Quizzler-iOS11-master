@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     let allQuestions = QuestionBank()
     var pickedAnswer: Bool = false
     var questionNumber: Int = 0
+    var score: Int = 0
     
     
     @IBOutlet weak var questionLabel: UILabel!
@@ -23,12 +24,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstQuestion = allQuestions.list[0]
-        questionLabel.text = firstQuestion.questionText
-        
+        //let firstQuestion = allQuestions.list[0]
+        //questionLabel.text = firstQuestion.questionText
+        nextQuestion()
     }
-
-
     @IBAction func answerPressed(_ sender: AnyObject) {
   
         if sender.tag == 1 {
@@ -43,19 +42,22 @@ class ViewController: UIViewController {
         nextQuestion()
     }
     
-    
     func updateUI() {
-      
+        // adjust our progress and score labels.
+        scoreLabel.text = "Score: \(score)"
+        progressLabel.text = "\(questionNumber + 1) / 13"
+        
+        // adjust the width of the progress bar.
+        progressBar.frame.size.width = (view.frame.size.width / 13) * CGFloat(questionNumber + 1)
     }
     
-
     func nextQuestion() {
         
         if questionNumber < allQuestions.list.count {
             questionLabel.text = allQuestions.list[questionNumber].questionText
+            updateUI()
         }
         else {
-            
             // add an alert and alertAction programmatically.
             let alert = UIAlertController(title: "You've answered all the questions.", message: "Start over?", preferredStyle: .alert)
     
@@ -63,30 +65,30 @@ class ViewController: UIViewController {
                 self.startOver()
             })
             
+            // Add and present the alert
             alert.addAction(restartAction)
             present(alert, animated: true, completion: nil)
         }
     }
-    
     
     func checkAnswer(questionNumber index: Int) {
     
         let correctAnswer = allQuestions.list[index].answer
         
         if pickedAnswer == correctAnswer {
-            print("You got it.")
+            //print("You got it.")
+            ProgressHUD.showSuccess("Correct!")
+            score += 1
         }
         else {
-            print("Wrong.")
+            //print("Oops.")
+            ProgressHUD.showError("Wrong!")
         }
     }
-    
     
     func startOver() {
         questionNumber = 0 // reset questionNumber
+        score = 0 // reset score
         nextQuestion()
     }
-    
-
-    
 }
